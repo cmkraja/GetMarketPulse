@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Market Data</title>
+</head>
+<body>
+
+<h2>Market Data</h2>
+<button onclick="loadData()">Get Data</button>
+
+<pre id="output">Click button to load data...</pre>
+
+<script>
+function loadData() {
+    fetch("http://127.0.0.1:5000/get-data")
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("output").innerText =
+            `Gold 24K: ${data.gold_24k}
+Gold 22K: ${data.gold_22k}
+Silver: ${data.silver}
+USD/INR: ${data.usd_inr}
+Nifty: ${data.nifty}`;
+    })
+    .catch(err => {
+        document.getElementById("output").innerText = "Error: " + err;
+    });
+}
+</script>
+
+</body>
+</html>
