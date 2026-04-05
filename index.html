@@ -2,25 +2,111 @@
 <html>
 <head>
     <title>Market Data</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .buttons {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        #localData {
+            background: #22c55e;
+            color: white;
+        }
+
+        #onlineData {
+            background: #3b82f6;
+            color: white;
+        }
+
+        #reset {
+            background: #ef4444;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        button:disabled {
+            background: gray;
+            cursor: not-allowed;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: left;
+            white-space: pre-line;
+            font-size: 16px;
+        }
+
+        .footer {
+            margin-top: 15px;
+            font-size: 12px;
+            opacity: 0.6;
+        }
+    </style>
 </head>
+
 <body>
 
-<h2>Market Data</h2>
-<span>Get data : </span>
-<button id="localData" onclick="localData()">Local</button>
-<button id="onlineData" onclick="onlineData()">Online</button>
+<div class="container">
 
-<pre id="output">Click button to load data</pre>
+    <h2>📊 Market Data</h2>
 
-<button id="reset" onclick="reset()">reset</button>
+    <div class="buttons">
+        <button id="localData" onclick="localData()">Local</button>
+        <button id="onlineData" onclick="onlineData()">Online</button>
+    </div>
+
+    <div class="card" id="output">
+        Click button to load data
+    </div>
+
+    <button id="reset" onclick="reset()">Reset</button>
+
+    <div class="footer">Live market preview</div>
+
+</div>
 
 <script>
 var btn_local = document.getElementById("localData");
 var btn_online = document.getElementById("onlineData");
 var btn_output = document.getElementById("output");
+
 function localData() {
     btn_online.disabled = true;
-    btn_output.innerText = 'Loading data...'
+    btn_output.innerText = 'Loading data...';
+
     fetch("http://127.0.0.1:5000/get-data")
     .then(res => res.json())
     .then(data => {
@@ -30,14 +116,11 @@ function localData() {
         btn_output.innerText = "Error: " + err;
     });
 }
+
 function onlineData() {
     btn_local.disabled = true;
-    btn_output.innerText = 'Loading data...'
-    // fetch("https://market-app-wx3i.onrender.com/get-data")
-    // .then(res => res.text())   // 👈 TEMP change
-    // .then(data => {
-    //     console.log(data);       // see actual response
-    // })
+    btn_output.innerText = 'Loading data...';
+
     fetch("https://market-app-wx3i.onrender.com/get-data")
     .then(res => res.json())
     .then(data => {
@@ -47,15 +130,17 @@ function onlineData() {
         btn_output.innerText = "Error: " + err;
     });
 }
-function output(data) {
-    btn_output.innerText = `📊 Market Data:
 
-🪙 Gold 24K → ${data.gold_24k} /g
-🪙 Gold 22K → ${data.gold_22k} /g
-⚪ Silver   → ${data.silver} /g
-💵 $1 USD   → ₹${data.usd_inr} INR
-📈 Nifty    → ${data.nifty}`;
+function output(data) {
+    btn_output.innerText = `📊 Market Data
+
+🪙 Gold 24K : ${data.gold_24k} /g
+🪙 Gold 22K : ${data.gold_22k} /g
+⚪ Silver   : ${data.silver} /g
+💵 USD/INR : ₹${data.usd_inr}
+📈 Nifty   : ${data.nifty}`;
 }
+
 function reset() {
     btn_online.disabled = false;
     btn_local.disabled = false;
