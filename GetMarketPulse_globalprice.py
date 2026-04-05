@@ -4,9 +4,6 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0"
 }
 
-def format_inr(value):
-    return f"₹{format(int(value), ',')}"
-
 def get_data():
     try:
         # ---------- USD/INR ----------
@@ -17,26 +14,20 @@ def get_data():
         except:
             usd_inr = 83.0  # fallback
 
-        # ---------- GOLD ----------
+        # ---------- GOLD (fallback safe calculation) ----------
         try:
+            # Using Yahoo Finance Gold Futures
             gold_url = "https://query1.finance.yahoo.com/v8/finance/chart/GC=F"
             gold_data = requests.get(gold_url, headers=HEADERS, timeout=10).json()
 
             gold_usd_per_oz = gold_data["chart"]["result"][0]["meta"]["regularMarketPrice"]
 
-            # ounce → gram
             gold_per_gram_usd = gold_usd_per_oz / 31.1035
-
-            # INR conversion
             gold_24k = gold_per_gram_usd * usd_inr
-
-            # ✅ Calibrated Chennai adjustment (IMPORTANT FIX)
-            gold_24k = gold_24k * 1.03
-
             gold_22k = gold_24k * 0.916
 
-            g_24k = format_inr(gold_24k)
-            g_22k = format_inr(gold_22k)
+            g_24k = f"₹{round(gold_24k, 0)}"
+            g_22k = f"₹{round(gold_22k, 0)}"
 
         except:
             g_24k, g_22k = "ERR", "ERR"
@@ -49,11 +40,7 @@ def get_data():
             silver_usd_per_oz = silver_data["chart"]["result"][0]["meta"]["regularMarketPrice"]
 
             silver_per_gram = (silver_usd_per_oz / 31.1035) * usd_inr
-
-            # small realistic adjustment
-            silver_per_gram = silver_per_gram * 1.02
-
-            silver = format_inr(silver_per_gram)
+            silver = f"₹{round(silver_per_gram, 0)}"
 
         except:
             silver = "ERR"
@@ -63,10 +50,9 @@ def get_data():
             nifty_url = "https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI"
             nifty_data = requests.get(nifty_url, headers=HEADERS, timeout=10).json()
 
-            nifty_val = nifty_data["chart"]["result"][0]["meta"]["regularMarketPrice"]
-            nifty = f"{round(nifty_val, 2)}"
+            nifty = nifty_data["chart"]["result"][0]["meta"]["regularMarketPrice"]
         except:
-            nifty = "0"
+            nifty = 0
 
         return g_24k, g_22k, silver, round(usd_inr, 2), nifty
 
