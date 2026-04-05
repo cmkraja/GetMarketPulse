@@ -13,17 +13,13 @@
             padding: 20px;
         }
 
-        h2 {
-            margin-bottom: 20px;
-        }
-
         .container {
             max-width: 500px;
             margin: auto;
         }
 
-        .buttons {
-            margin-bottom: 20px;
+        h2 {
+            margin-bottom: 15px;
         }
 
         button {
@@ -33,46 +29,45 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.3s;
         }
 
-        #localData {
-            background: #22c55e;
-            color: white;
-        }
-
-        #onlineData {
-            background: #3b82f6;
-            color: white;
-        }
-
-        #reset {
-            background: #ef4444;
-            color: white;
-        }
-
-        button:hover {
-            opacity: 0.8;
-        }
+        #localData { background: #22c55e; color: white; }
+        #onlineData { background: #3b82f6; color: white; }
+        #reset { background: #ef4444; color: white; }
 
         button:disabled {
             background: gray;
             cursor: not-allowed;
         }
 
-        .card {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: left;
-            white-space: pre-line;
-            font-size: 16px;
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
         }
 
-        .footer {
-            margin-top: 15px;
-            font-size: 12px;
-            opacity: 0.6;
+        .card {
+            background: #1e293b;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .card span {
+            display: block;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .card b {
+            font-size: 20px;
+        }
+
+        #date {
+            margin-top: 12px;
+            font-size: 13px;
+            opacity: 0.7;
         }
     </style>
 </head>
@@ -83,68 +78,78 @@
 
     <h2>📊 Market Data</h2>
 
-    <div class="buttons">
-        <button id="localData" onclick="localData()">Local</button>
-        <button id="onlineData" onclick="onlineData()">Online</button>
+    <button id="localData" onclick="localData()">Local</button>
+    <button id="onlineData" onclick="onlineData()">Online</button>
+
+    <div id="output" class="grid">
+        <div class="card"><span>Gold 24K</span><b id="gold24">--</b></div>
+        <div class="card"><span>Gold 22K</span><b id="gold22">--</b></div>
+        <div class="card"><span>Silver</span><b id="silver">--</b></div>
+        <div class="card"><span>USD / INR</span><b id="usd">--</b></div>
+        <div class="card"><span>Nifty</span><b id="nifty">--</b></div>
     </div>
 
-    <div class="card" id="output">
-        Click button to load data
-    </div>
+    <div id="date">Click button to load data</div>
 
     <button id="reset" onclick="reset()">Reset</button>
-
-    <div class="footer">Live market preview</div>
 
 </div>
 
 <script>
 var btn_local = document.getElementById("localData");
 var btn_online = document.getElementById("onlineData");
-var btn_output = document.getElementById("output");
 
 function localData() {
     btn_online.disabled = true;
-    btn_output.innerText = 'Loading data...';
+    document.getElementById("date").innerText = "Loading...";
 
     fetch("http://127.0.0.1:5000/get-data")
     .then(res => res.json())
-    .then(data => {
-        output(data)
-    })
+    .then(data => output(data))
     .catch(err => {
-        btn_output.innerText = "Error: " + err;
+        document.getElementById("date").innerText = "Error: " + err;
     });
 }
 
 function onlineData() {
     btn_local.disabled = true;
-    btn_output.innerText = 'Loading data...';
+    document.getElementById("date").innerText = "Loading...";
 
     fetch("https://market-app-wx3i.onrender.com/get-data")
     .then(res => res.json())
-    .then(data => {
-        output(data)
-    })
+    .then(data => output(data))
     .catch(err => {
-        btn_output.innerText = "Error: " + err;
+        document.getElementById("date").innerText = "Error: " + err;
     });
 }
 
 function output(data) {
-    btn_output.innerText = `📊 Market Data
+    document.getElementById("gold24").innerText = data.gold_24k + " /g";
+    document.getElementById("gold22").innerText = data.gold_22k + " /g";
+    document.getElementById("silver").innerText = data.silver + " /g";
+    document.getElementById("usd").innerText = "₹" + data.usd_inr;
+    document.getElementById("nifty").innerText = data.nifty;
 
-🪙 Gold 24K : ${data.gold_24k} /g
-🪙 Gold 22K : ${data.gold_22k} /g
-⚪ Silver   : ${data.silver} /g
-💵 USD/INR : ₹${data.usd_inr}
-📈 Nifty   : ${data.nifty}`;
+    const now = new Date();
+    const formattedDate = now.toLocaleString("en-IN", {
+        dateStyle: "medium",
+        timeStyle: "short"
+    });
+
+    document.getElementById("date").innerText = "📅 Updated: " + formattedDate;
 }
 
 function reset() {
     btn_online.disabled = false;
     btn_local.disabled = false;
-    btn_output.innerText = 'Click button to load data';
+
+    document.getElementById("gold24").innerText = "--";
+    document.getElementById("gold22").innerText = "--";
+    document.getElementById("silver").innerText = "--";
+    document.getElementById("usd").innerText = "--";
+    document.getElementById("nifty").innerText = "--";
+
+    document.getElementById("date").innerText = "Click button to load data";
 }
 </script>
 
