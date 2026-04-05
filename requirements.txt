@@ -1,6 +1,4 @@
 flask
-playwright
-gunicorn
 flask-cors
+gunicorn
 playwright
-tweepy
