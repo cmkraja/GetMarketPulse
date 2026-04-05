@@ -12,16 +12,16 @@
 
 <script>
 function loadData() {
-    fetch("https://market-app-wx3i.onrender.com/get-data")
+    fetch("http://127.0.0.1:5000/get-data")
     .then(res => res.json())
     .then(data => {
         document.getElementById("output").innerText = `📊 Market Data:
 
 🪙 Gold 24K → ${data.gold_24k} /g
 🪙 Gold 22K → ${data.gold_22k} /g
-⚪ Silver → ${data.silver} /g
-💵 $1 USD → ₹${data.usd_inr} INR
-📈 Nifty → ${data.nifty}`;
+⚪ Silver   → ${data.silver} /g
+💵 $1 USD   → ₹${data.usd_inr} INR
+📈 Nifty    → ${data.nifty}`;
     })
     .catch(err => {
         document.getElementById("output").innerText = "Error: " + err;

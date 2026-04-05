@@ -108,13 +108,17 @@ def get_data():
         page.goto("https://www.goodreturns.in/nse/", wait_until="domcontentloaded")
         page.wait_for_timeout(6000)
 
-        rows = page.query_selector_all(".moneyweb-tabsContent table tbody tr")
+        # rows = page.query_selector_all(".moneyweb-tabsContent table tbody tr")
 
         nifty = ""
-        if len(rows) > 4:
-            cols = rows[4].query_selector_all("td")
-            if len(cols) > 1:
-                nifty = cols[1].inner_text()
+        # if len(rows) > 4:
+        #     cols = rows[4].query_selector_all("td")
+        #     if len(cols) > 1:
+        #         nifty = cols[1].inner_text()
+        try:
+            nifty = page.query_selector(".price-value").inner_text()
+        except:
+            nifty = 0
 
         browser.close()
 
@@ -133,6 +137,7 @@ def main():
 🪙 Gold 22K → {gold_22k} /g
 ⚪ Silver → {silver} /g
 💵 $1 USD → ₹{usd_inr} INR
+📈 Nifty → {nifty}
 
 🔔 Follow @GetMarketPulse 🔁 Auto-Updated daily!
 #GoldRate #SilverRate #DollarRate
