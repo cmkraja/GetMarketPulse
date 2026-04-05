@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
     <title>Market Data</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,91 +10,99 @@
             text-align: center;
             margin: 0;
             padding: 20px;
-        }
+        }.container {
+        max-width: 500px;
+        width: 90%;
+        margin: auto;
+    }
 
-        .container {
-            max-width: 500px;
-            margin: auto;
-        }
+    h2 {
+        margin-bottom: 15px;
+        font-size: 1.8rem;
+    }
 
-        h2 {
-            margin-bottom: 15px;
-        }
+    button {
+        padding: 10px 15px;
+        margin: 5px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1rem;
+    }
 
+    #localData { background: #22c55e; color: white; }
+    #onlineData { background: #3b82f6; color: white; }
+    #reset { background: #ef4444; color: white; }
+
+    button:disabled {
+        background: gray;
+        cursor: not-allowed;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .card {
+        background: #1e293b;
+        padding: 15px;
+        border-radius: 12px;
+        text-align: left;
+    }
+
+    .card span {
+        display: block;
+        font-size: 0.85rem;
+        opacity: 0.8;
+    }
+
+    .card b {
+        font-size: 1.2rem;
+    }
+
+    #date {
+        margin-top: 12px;
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+
+    @media (max-width: 400px) {
         button {
-            padding: 10px 15px;
-            margin: 5px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
+            font-size: 0.9rem;
+            padding: 8px 12px;
         }
-
-        #localData { background: #22c55e; color: white; }
-        #onlineData { background: #3b82f6; color: white; }
-        #reset { background: #ef4444; color: white; }
-
-        button:disabled {
-            background: gray;
-            cursor: not-allowed;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .card {
-            background: #1e293b;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: left;
-        }
-
-        .card span {
-            display: block;
-            font-size: 14px;
-            opacity: 0.7;
-        }
-
         .card b {
-            font-size: 20px;
+            font-size: 1rem;
         }
+        .card span {
+            font-size: 0.75rem;
+        }
+    }
+</style>
 
-        #date {
-            margin-top: 12px;
-            font-size: 13px;
-            opacity: 0.7;
-        }
-    </style>
 </head>
+<body><div class="container"><h2>📊 Market Data</h2>
 
-<body>
+<button id="localData" onclick="localData()">Local</button>
+<button id="onlineData" onclick="onlineData()">Online</button>
 
-<div class="container">
-
-    <h2>📊 Market Data</h2>
-
-    <button id="localData" onclick="localData()">Local</button>
-    <button id="onlineData" onclick="onlineData()">Online</button>
-
-    <div id="output" class="grid">
-        <div class="card"><span>Gold 24K</span><b id="gold24">--</b></div>
-        <div class="card"><span>Gold 22K</span><b id="gold22">--</b></div>
-        <div class="card"><span>Silver</span><b id="silver">--</b></div>
-        <div class="card"><span>USD / INR</span><b id="usd">--</b></div>
-        <div class="card"><span>Nifty</span><b id="nifty">--</b></div>
-    </div>
-
-    <div id="date">Click button to load data</div>
-
-    <button id="reset" onclick="reset()">Reset</button>
-
+<div id="output" class="grid">
+    <div class="card"><span>Gold 24K</span><b id="gold24">--</b></div>
+    <div class="card"><span>Gold 22K</span><b id="gold22">--</b></div>
+    <div class="card"><span>Silver</span><b id="silver">--</b></div>
+    <div class="card"><span>USD / INR</span><b id="usd">--</b></div>
+    <div class="card"><span>Nifty</span><b id="nifty">--</b></div>
 </div>
 
-<script>
+<div id="date">Click button to load data</div>
+
+<button id="reset" onclick="reset()">Reset</button>
+
+</div><script>
 var btn_local = document.getElementById("localData");
 var btn_online = document.getElementById("onlineData");
 
@@ -151,7 +158,5 @@ function reset() {
 
     document.getElementById("date").innerText = "Click button to load data";
 }
-</script>
-
-</body>
+</script></body>
 </html>
