@@ -8,7 +8,8 @@ def get_data():
                 args=[
                     "--no-sandbox",
                     "--disable-setuid-sandbox",
-                    "--disable-dev-shm-usage"
+                    "--disable-dev-shm-usage",
+                    "--disable-gpu"   # 👈 ADD THIS
                 ]
             )
 
