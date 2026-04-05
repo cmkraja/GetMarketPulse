@@ -1,55 +1,4 @@
 from playwright.sync_api import sync_playwright
-from datetime import datetime
-import tweepy
-from tweepy import TweepyException
-import time
-from tweepy.errors import TwitterServerError, TooManyRequests
-
-# Twitter API credentials
-bearer_token = "AAAAAAAAAAAAAAAAAAAAAI0K8wEAAAAAylGDq1uihyPar%2FSVOpAa4QwKIA8%3DUTHnPNxAsQyo7X35ZYxBrygRrIqLyTJ1YqZSwtRyZpgkNncHIe"
-consumer_key = "QRe7vcK9pU42YKWKIZcaBp2ST"
-consumer_secret = "sMtnLEmhR4zyXz2W6YHNevbV0O4aq7Vo79U5mtgZfNrz0bYIPP"
-access_token = "1909115498278641664-c8hLluovLk28BjNTID2IsPzRl9p061"
-access_token_secret = "YcfpvW2ntbRQfGnmJAXr5ArbYpocpJ60d2lNVqGTya996"
-
-# Authenticate to Twitter
-client = tweepy.Client(
-    bearer_token=bearer_token, consumer_key=consumer_key, consumer_secret=consumer_secret, 
-    access_token=access_token, access_token_secret=access_token_secret
-)
-
-# Function to post a tweet
-# def post_tweet(tweet_text):
-#     try:
-#         tweet = tweet_text
-        
-#         response = client.create_tweet(text=tweet)
-#         print("Tweet posted successfully!")
-#         print("Response:", response)
-#     except TweepyException as e:
-#         print(f"An error occurred: {e}")
-
-def post_tweet(tweet_text, retries=5):
-    for attempt in range(retries):
-        try:
-            response = client.create_tweet(text=tweet_text)
-            print("✅ Tweet posted successfully!")
-            return response
-
-        except TwitterServerError as e:
-            wait_time = (2 ** attempt) * 5  # exponential backoff
-            print(f"⚠️ Server error (503). Retry in {wait_time}s...")
-            time.sleep(wait_time)
-
-        except TooManyRequests as e:
-            print("⛔ Rate limit hit. Sleeping for 15 minutes...")
-            time.sleep(900)
-
-        except Exception as e:
-            print("❌ Unexpected error:", e)
-            break
-
-    print("🚫 Failed after retries.")
 
 # --- Scrape data ---
 def get_data():
@@ -119,33 +68,3 @@ def get_data():
         browser.close()
 
     return g_24k, g_22k, silver, round(usd_inr, 2), nifty
-
-# --- Main ---
-def main():
-    try:
-        date_str = datetime.now().strftime("%d %b %Y")
-
-        gold_24k, gold_22k, silver, usd_inr, nifty = get_data()
-
-        tweet = f"""{date_str} - Market Captured 📊:
-
-🪙 Gold 24K → {gold_24k} /g
-🪙 Gold 22K → {gold_22k} /g
-⚪ Silver → {silver} /g
-💵 $1 USD → ₹{usd_inr} INR
-
-🔔 Follow @GetMarketPulse 🔁 Auto-Updated daily!
-#GoldRate #SilverRate #DollarRate
-"""
-
-        print("Tweet Preview:\n", tweet)
-        post_tweet(tweet)
-
-        print("✅ Tweet posted!")
-
-    except Exception as e:
-        print("❌ Error:", e)
-
-# --- Run ---
-if __name__ == "__main__":
-    main()
