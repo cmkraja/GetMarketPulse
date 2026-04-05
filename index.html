@@ -34,10 +34,15 @@ function onlineData() {
     btn_local.disabled = true;
     btn_output.innerText = 'Loading data...'
     fetch("https://market-app-wx3i.onrender.com/get-data")
-    .then(res => res.json())
+    .then(res => res.text())   // 👈 TEMP change
     .then(data => {
-        output(data)
+        console.log(data);       // see actual response
     })
+    // fetch("https://market-app-wx3i.onrender.com/get-data")
+    // .then(res => res.json())
+    // .then(data => {
+    //     output(data)
+    // })
     .catch(err => {
         btn_output.innerText = "Error: " + err;
     });
