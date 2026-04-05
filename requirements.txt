@@ -3,3 +3,5 @@ playwright
 gunicorn
 flask-cors
 playwright
+tweepy
+time
