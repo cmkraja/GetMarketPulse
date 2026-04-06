@@ -10,79 +10,88 @@
             text-align: center;
             margin: 0;
             padding: 20px;
-        }.container {
-        max-width: 500px;
-        width: 90%;
-        margin: auto;
-    }
-
-    h2 {
-        margin-bottom: 15px;
-        font-size: 1.8rem;
-    }
-
-    button {
-        padding: 10px 15px;
-        margin: 5px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 1rem;
-    }
-
-    #localData { background: #22c55e; color: white; }
-    #onlineData { background: #3b82f6; color: white; }
-    #reset { background: #ef4444; color: white; }
-
-    button:disabled {
-        background: gray;
-        cursor: not-allowed;
-    }
-
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 12px;
-        margin-top: 20px;
-    }
-
-    .card {
-        background: #1e293b;
-        padding: 15px;
-        border-radius: 12px;
-        text-align: left;
-    }
-
-    .card span {
-        display: block;
-        font-size: 0.85rem;
-        opacity: 0.8;
-    }
-
-    .card b {
-        font-size: 1.2rem;
-    }
-
-    #date {
-        margin-top: 12px;
-        font-size: 0.8rem;
-        opacity: 0.7;
-    }
-
-    @media (max-width: 400px) {
-        button {
-            font-size: 0.9rem;
-            padding: 8px 12px;
         }
-        .card b {
+        
+        .container {
+            max-width: 500px;
+            width: 90%;
+            margin: auto;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
             font-size: 1rem;
         }
-        .card span {
-            font-size: 0.75rem;
+
+        #localData { background: #22c55e; color: white; }
+        #onlineData { background: #3b82f6; color: white; }
+        #reset { background: #ef4444; color: white; }
+
+        #localData:disabled,
+        #onlineData:disabled,
+        #reset:disabled {
+            background: gray;
+            cursor: not-allowed;
         }
-    }
-</style>
+
+        .grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .card span {
+            display: block;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .card b {
+            font-size: 1.2rem;
+        }
+
+        #date {
+            margin-top: 12px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 400px) {
+            button {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+            .card b {
+                font-size: 1rem;
+            }
+            .card span {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (min-width: 400px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
 
 </head>
 <body><div class="container"><h2>📊 Market Data</h2>
